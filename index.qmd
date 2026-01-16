@@ -12,6 +12,12 @@ title-block-banner: true
 project:
   type: website
   output-dir: docs
+website:
+  title: "Anomaly Detection of U.S. Congress Trades"
+format:
+  html:
+    theme: cosmo
+    toc: true
 ---
 
 
