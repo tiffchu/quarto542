@@ -48,11 +48,13 @@ examine more closely.
 ## Why Congressional Trading Is a Data Science Problem
 
 Congressional stock trading data is both large and structurally complex:
+
 -  Hundreds of individual lawmakers 
--  Thousands of trades across
-different industries 
--  Varying trade sizes, timing, and market
-conditions 
+
+-  Thousands of trades across different industries 
+
+-  Varying trade sizes, timing, and market conditions 
+
 -  Sparse labels - we rarely know which trades are illegal
 
 This makes the problem ill-suited for traditional supervised machine
@@ -114,14 +116,17 @@ Before applying machine learning, the raw data must be cleaned and
 standardized.
 
 Handling Missing and Inconsistent Values Financial disclosure data from our dataset contains: 
+
 -  Ranges instead of exact trade values -  Missing prices due to non-trading days 
 -  Inconsistent ticker formats 
 
 These are addressed through: 
+
 -  Converting value ranges into numerical midpoints
 -  Dropping trades with insufficient market data 
--  Aligning trade dates
-with nearest available trading days This step is critical as anomaly
+-  Aligning trade dates with nearest available trading days 
+
+This step is critical as anomaly
 detection is highly sensitive to noise.
 
 #### Feature Scaling
@@ -136,6 +141,7 @@ This ensures the model treats each signal proportionately.
 Raw trades alone are not informative enough. The model needs features
 that describe how unusual a trade is relative to normal behavior. Key
 engineered features include: 
+
 -  Post-trade returns over different time horizons 
 -  Relative performance compared to the broader market 
 -  Trade frequency patterns 
@@ -205,6 +211,7 @@ models deserve particular attention.
 #### Visualizing Anomalies
 
 Visualization plays a crucial role in interpretation. Above, we used:
+
 - Dimensionality reduction plots (PCA) showing separation between normal and flagged trades 
 - Ranked bar charts of the most suspicious trades and lawmakers 
 
@@ -214,6 +221,7 @@ compared to the norm? Are anomalies isolated or systematic?
 ### Interpreting the Results
 
 The models consistently flag trades that: 
+
 - Exhibit unusually high short-term returns 
 - Occur at statistically rare times relative to market movements 
 - Appear inconsistent with typical Congressionaltrading behavior 

@@ -229,7 +229,13 @@ window.Quarto = {
 <p>Using only public data, this tutorial demonstrates how unsupervised models can reduce a complex investigative problem into a manageable set of high-risk cases for journalists, researchers, and oversight bodies to examine more closely.</p>
 <section id="why-congressional-trading-is-a-data-science-problem" class="level2">
 <h2 class="anchored" data-anchor-id="why-congressional-trading-is-a-data-science-problem">Why Congressional Trading Is a Data Science Problem</h2>
-<p>Congressional stock trading data is both large and structurally complex: - Hundreds of individual lawmakers - Thousands of trades across different industries - Varying trade sizes, timing, and market conditions - Sparse labels - we rarely know which trades are illegal</p>
+<p>Congressional stock trading data is both large and structurally complex:</p>
+<ul>
+<li><p>Hundreds of individual lawmakers</p></li>
+<li><p>Thousands of trades across different industries</p></li>
+<li><p>Varying trade sizes, timing, and market conditions</p></li>
+<li><p>Sparse labels - we rarely know which trades are illegal</p></li>
+</ul>
 <p>This makes the problem ill-suited for traditional supervised machine learning. We do not have ground-truth labels for “insider trading,” and even confirmed cases are extremely rare.</p>
 <p>Yet the issue is far from hypothetical. Former Congressman <a href="https://www.justice.gov/usao-sdny/pr/former-congressman-christopher-collins-sentenced-insider-trading-scheme-and-lying">Chris Collins</a> used non-public information about a pharmaceutical trial to sell shares and avoid over $700,000 in losses. A <a href="https://www.nytimes.com/interactive/2022/09/13/us/politics/congress-stock-trading-investigation.html">New York Times analysis</a> found that roughly one-fifth of Congress members traded stocks related to industries overseen by their committees.</p>
 <p>These examples highlight the need for scalable, computational analysis. Machine learning can help by identifying trades that look unusual compared to typical behavior.</p>
@@ -274,15 +280,31 @@ window.Quarto = {
 <section id="data-cleaning-and-preprocessing" class="level3">
 <h3 class="anchored" data-anchor-id="data-cleaning-and-preprocessing">Data Cleaning and Preprocessing</h3>
 <p>Before applying machine learning, the raw data must be cleaned and standardized.</p>
-<p>Handling Missing and Inconsistent Values Financial disclosure data from our dataset contains: - Ranges instead of exact trade values - Missing prices due to non-trading days - Inconsistent ticker formats</p>
-<p>These are addressed through: - Converting value ranges into numerical midpoints - Dropping trades with insufficient market data - Aligning trade dates with nearest available trading days This step is critical as anomaly detection is highly sensitive to noise.</p>
+<p>Handling Missing and Inconsistent Values Financial disclosure data from our dataset contains:</p>
+<ul>
+<li>Ranges instead of exact trade values - Missing prices due to non-trading days</li>
+<li>Inconsistent ticker formats</li>
+</ul>
+<p>These are addressed through:</p>
+<ul>
+<li>Converting value ranges into numerical midpoints</li>
+<li>Dropping trades with insufficient market data</li>
+<li>Aligning trade dates with nearest available trading days</li>
+</ul>
+<p>This step is critical as anomaly detection is highly sensitive to noise.</p>
 <section id="feature-scaling" class="level4">
 <h4 class="anchored" data-anchor-id="feature-scaling">Feature Scaling</h4>
 <p>Because anomaly detection algorithms rely on distance metrics, feature scaling is essential. All numerical features are standardized so that large-scale features (e.g., returns) do not dominate smaller-scale ones This ensures the model treats each signal proportionately.</p>
 </section>
 <section id="feature-engineering" class="level4">
 <h4 class="anchored" data-anchor-id="feature-engineering">Feature Engineering</h4>
-<p>Raw trades alone are not informative enough. The model needs features that describe how unusual a trade is relative to normal behavior. Key engineered features include: - Post-trade returns over different time horizons - Relative performance compared to the broader market - Trade frequency patterns - Magnitude of price movement following the trade</p>
+<p>Raw trades alone are not informative enough. The model needs features that describe how unusual a trade is relative to normal behavior. Key engineered features include:</p>
+<ul>
+<li>Post-trade returns over different time horizons</li>
+<li>Relative performance compared to the broader market</li>
+<li>Trade frequency patterns</li>
+<li>Magnitude of price movement following the trade</li>
+</ul>
 <p>For example, a trade followed by unusually high short-term returns may be more suspicious than one aligned with normal market fluctuations. These features transform qualitative concerns (“like the trade looking lucky or coincidental”) into quantitative signals.</p>
 </section>
 </section>
@@ -370,13 +392,22 @@ Figure&nbsp;4: Anomaly-Detected Congress members and the top investors in that g
 <p>Using both methods provides robustness: trades flagged by multiple models deserve particular attention.</p>
 <section id="visualizing-anomalies" class="level4">
 <h4 class="anchored" data-anchor-id="visualizing-anomalies">Visualizing Anomalies</h4>
-<p>Visualization plays a crucial role in interpretation. Above, we used: - Dimensionality reduction plots (PCA) showing separation between normal and flagged trades - Ranked bar charts of the most suspicious trades and lawmakers</p>
+<p>Visualization plays a crucial role in interpretation. Above, we used:</p>
+<ul>
+<li>Dimensionality reduction plots (PCA) showing separation between normal and flagged trades</li>
+<li>Ranked bar charts of the most suspicious trades and lawmakers</li>
+</ul>
 <p>These visuals help answer: How extreme are flagged trades compared to the norm? Are anomalies isolated or systematic?</p>
 </section>
 </section>
 <section id="interpreting-the-results" class="level3">
 <h3 class="anchored" data-anchor-id="interpreting-the-results">Interpreting the Results</h3>
-<p>The models consistently flag trades that: - Exhibit unusually high short-term returns - Occur at statistically rare times relative to market movements - Appear inconsistent with typical Congressionaltrading behavior</p>
+<p>The models consistently flag trades that:</p>
+<ul>
+<li>Exhibit unusually high short-term returns</li>
+<li>Occur at statistically rare times relative to market movements</li>
+<li>Appear inconsistent with typical Congressionaltrading behavior</li>
+</ul>
 <p>Importantly, being flagged does not imply guilt. Innocent behavior can trigger anomalies, especially during volatile markets. However, the key advantage is scale reduction, from thousands of trades to a small subset worthy of deeper investigation</p>
 <p><img src="img/repub.png" id="fig-rep" class="img-fluid" alt="plot"> <img src="img/democrat.png" id="fig-demo" class="img-fluid" alt="plot"></p>
 
