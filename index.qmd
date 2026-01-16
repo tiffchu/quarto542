@@ -4,7 +4,6 @@ listing:
   contents: posts
   sort: "date desc"
   type: default
-  categories: true
   sort-ui: false
   filter-ui: false
 page-layout: full
@@ -22,9 +21,9 @@ format:
 
 
 
-# Anomaly Detection of U.S. Congress Trades
+# Anomaly Detection of U.S. Congress Trades using Unsupervised Machine Learning: A Walkthrough
 
-*A tutorial and explanation using unsupervised machine learning*
+*A step by step tutorial and explanation of an unsupervised machine learning project*
 
 Members of the United States Congress face long-standing concerns around
 conflicts of interest due to their access to market-moving information
@@ -39,7 +38,7 @@ hundreds of lawmakers and tens of thousands of disclosed trades,
 identifying suspicious activity manually is impractical. This project
 explores how **machine learning–based anomaly detection** can help flag
 unusual trading patterns that deserve closer scrutiny without making
-accusations or legal claims.
+accusations or legal claims. Unsupervised machine learning is the use of algorithms to find hidden patterns in unlabeled data, then grouping similar data points (clustering), reducing data dimensions, or finding association rules, making it great for detecting anomalies in large datasets. 
 
 Using only public data, this tutorial demonstrates how unsupervised
 models can reduce a complex investigative problem into a manageable set
@@ -49,9 +48,12 @@ examine more closely.
 ## Why Congressional Trading Is a Data Science Problem
 
 Congressional stock trading data is both large and structurally complex:
-\* Hundreds of individual lawmakers \* Thousands of trades across
-different industries \* Varying trade sizes, timing, and market
-conditions \* Sparse labels - we rarely know which trades are illegal
+-  Hundreds of individual lawmakers 
+-  Thousands of trades across
+different industries 
+-  Varying trade sizes, timing, and market
+conditions 
+-  Sparse labels - we rarely know which trades are illegal
 
 This makes the problem ill-suited for traditional supervised machine
 learning. We do not have ground-truth labels for “insider trading,” and
@@ -72,9 +74,7 @@ compared to typical behavior.
 ## Project Goal
 
 The goal of this project is not to accuse individuals of wrongdoing.
-Instead, it aims to **automatically identify trades that are
-statistically unusual compared to typical Congressional trading
-behavior**. You can follow along by using the code in this
+Instead, it aims to **automatically identify trades that are statistically unusual compared to typical Congressional trading behavior**. You can follow along by using the code in this
 [repository.](https://github.com/tiffchu/Anomaly_Detection_US_Senate/blob/main/sprint4/capstone-sprint4-Main.ipynb)
 
 These flagged trades can then be examined manually with additional
@@ -83,7 +83,7 @@ actions. Machine learning narrows the search space, then humans provide
 interpretation and judgment
 
 ![Top earning congress members in 2024 through
-trading](img/traders2.png)
+trading. Do these figures seem normal for public servants?](img/traders2.png)
 
 ## Data Sources and Structure
 
@@ -91,7 +91,7 @@ This project uses only publicly available data, including:
 
 1.  Congressional trade disclosures
 
--   Source: Senate stock transaction
+-   Data source: Senate stock transactions
     [data](https://www.kaggle.com/datasets/shabbarank/congressional-trading-inception-to-march-23)
 -   Fields include transaction date, ticker, trade type, and trade value
 
@@ -108,16 +108,19 @@ This project uses only publicly available data, including:
 
 ## Tutorial
 
-#### Data Cleaning and Preprocessing
+### Data Cleaning and Preprocessing
 
 Before applying machine learning, the raw data must be cleaned and
 standardized.
 
-Handling Missing and Inconsistent Values Financial disclosure data from
-our dataset contains: \* Ranges instead of exact trade values \* Missing
-prices due to non-trading days \* Inconsistent ticker formats These are
-addressed through: \* Converting value ranges into numerical midpoints
-\* Dropping trades with insufficient market data \* Aligning trade dates
+Handling Missing and Inconsistent Values Financial disclosure data from our dataset contains: 
+-  Ranges instead of exact trade values -  Missing prices due to non-trading days 
+-  Inconsistent ticker formats 
+
+These are addressed through: 
+-  Converting value ranges into numerical midpoints
+-  Dropping trades with insufficient market data 
+-  Aligning trade dates
 with nearest available trading days This step is critical as anomaly
 detection is highly sensitive to noise.
 
@@ -132,25 +135,27 @@ This ensures the model treats each signal proportionately.
 
 Raw trades alone are not informative enough. The model needs features
 that describe how unusual a trade is relative to normal behavior. Key
-engineered features include: \* Post-trade returns over different time
-horizons \* Relative performance compared to the broader market \* Trade
-frequency patterns \* Magnitude of price movement following the trade
+engineered features include: 
+-  Post-trade returns over different time horizons 
+-  Relative performance compared to the broader market 
+-  Trade frequency patterns 
+-  Magnitude of price movement following the trade
+
 For example, a trade followed by unusually high short-term returns may
 be more suspicious than one aligned with normal market fluctuations.
 These features transform qualitative concerns (“like the trade looking
 lucky or coincidental”) into quantitative signals.
 
-#### Unsupervised Anomaly Detection?
+### Unsupervised Anomaly Detection
 
 Unlike fraud detection in credit cards, we do not have labeled examples
-of insider trading for Congress. So we inspect **which trades look most
-different from the majority of Congressional trades?** Unsupervised
+of insider trading for Congress. So we inspect **which trades look mostdifferent from the majority of Congressional trades?** Unsupervised
 anomaly detection models are ideal for this setting because they learn
 what “normal” looks like and flags deviations without prior labels. This
 project explores two complementary approaches and combines results from
 both.
 
-#### Method 1: Agglomerative Clustering
+### Method 1: Agglomerative Clustering
 
 Agglomerative clustering is a hierarchical method that groups similar
 data points together. The intuition behind this is that most trades
@@ -163,13 +168,9 @@ interpretable, effective for identifying extreme outliers, and no
 assumptions about data distribution. This method serves as a baseline
 anomaly detector and provides intuition about the structure of the data.
 
-![After dimensionality reduction of the dataset and using the clustering
-model resulting labels to define cluster
-colors](img/pca_a.png){#fig-pca_a}
+![plot post dimensionality reduction of the dataset and using the clustering model resulting labels to define cluster colors](img/pca_a.png){#fig-pca_a}
 
-![dendrogram cluster visualization longer vertical lines connecting
-points = larger distances (the second
-cluster)](img/dendro.png){#fig-dendro}
+![dendrogram cluster visualization - longer vertical lines connectingpoints = larger distances (the second cluster)](img/dendro.png){#fig-dendro}
 
 ### Method 2: Autoencoder Neural Network
 
@@ -178,9 +179,10 @@ type of neural network designed for unsupervised learning. An
 autoencoder learns to: Compress the input data into a low-dimensional
 representation Reconstruct the original data from that representation
 During training, it learns the dominant patterns present in the dataset.
-*Anomaly detection via reconstruction error*: Normal trades are
+
+Anomaly detection via reconstruction error: Normal trades are
 reconstructed accurately and unusual trades have high reconstruction
-error This error becomes the anomaly score. *Pros:* anomalies are subtle
+error This error becomes the anomaly score. **Pros:** anomalies are subtle
 rather than extreme and relationships between features are non-linear
 
 ![Principal Component Analysis (PCA) on a dataset to reduce
@@ -188,8 +190,7 @@ dimensionality to two component and then displays the transformed data
 in a scatter plot colored by cluster
 labels](img/pca_ae.png){#fig-pca_ae}
 
-![Anomaly-Detected Congress members and the top investors in that
-group](img/bar.png){#fig-bar}
+![Anomaly-Detected Congress members and the top investors in that group](img/bar.png){#fig-bar}
 
 ### Comparing the Two Methods
 
@@ -203,18 +204,21 @@ models deserve particular attention.
 
 #### Visualizing Anomalies
 
-Visualization plays a crucial role in interpretation. Above, we used: \*
-Dimensionality reduction plots (PCA) showing separation between normal
-and flagged trades \* Ranked bar charts of the most suspicious trades
-and lawmakers These visuals help answer: How extreme are flagged trades
+Visualization plays a crucial role in interpretation. Above, we used:
+- Dimensionality reduction plots (PCA) showing separation between normal and flagged trades 
+- Ranked bar charts of the most suspicious trades and lawmakers 
+
+These visuals help answer: How extreme are flagged trades
 compared to the norm? Are anomalies isolated or systematic?
 
 ### Interpreting the Results
 
-The models consistently flag trades that: \* Exhibit unusually high
-short-term returns \* Occur at statistically rare times relative to
-market movements \* Appear inconsistent with typical Congressional
-trading behavior Importantly, being flagged does not imply guilt.
+The models consistently flag trades that: 
+- Exhibit unusually high short-term returns 
+- Occur at statistically rare times relative to market movements 
+- Appear inconsistent with typical Congressionaltrading behavior 
+
+Importantly, being flagged does not imply guilt.
 Innocent behavior can trigger anomalies, especially during volatile
 markets. However, the key advantage is scale reduction, from thousands
 of trades to a small subset worthy of deeper investigation
