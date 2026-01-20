@@ -104,9 +104,9 @@ This project uses only publicly available data, including:
 3.  Contextual features, time series aggregates
 
 -   Time windows relative to trades
--   Aggregated return statistics The resulting dataset contains
-    thousands of observations, each representing a single trade combined
-    with numerical features showing the current market.
+-   Aggregated return statistics 
+
+The resulting dataset contains thousands of observations, each representing a single trade combined with numerical features showing the current market.
 
 ## Tutorial
 
