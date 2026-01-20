@@ -155,7 +155,7 @@ lucky or coincidental”) into quantitative signals.
 ### Unsupervised Anomaly Detection
 
 Unlike fraud detection in credit cards, we do not have labeled examples
-of insider trading for Congress. So we inspect **which trades look mostdifferent from the majority of Congressional trades?** Unsupervised
+of insider trading for Congress. So we inspect **which trades look most different from the majority of Congressional trades?** Unsupervised
 anomaly detection models are ideal for this setting because they learn
 what “normal” looks like and flags deviations without prior labels. This
 project explores two complementary approaches and combines results from
